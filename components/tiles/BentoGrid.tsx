@@ -9,7 +9,8 @@ import StatsTile from "./StatsTile";
 import QuickActionsTile from "./QuickActionsTile";
 
 interface BentoGridProps {
-  courses: Course[];
+  courses?: Course[];
+  children?: React.ReactNode;
 }
 
 const containerVariants = {
@@ -36,7 +37,7 @@ const tileVariants = {
   },
 };
 
-export default function BentoGrid({ courses }: BentoGridProps) {
+export default function BentoGrid({ courses, children }: BentoGridProps) {
   return (
     <motion.div
       variants={containerVariants}
@@ -44,6 +45,8 @@ export default function BentoGrid({ courses }: BentoGridProps) {
       animate="visible"
       className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
     >
+      {children ? children : (
+        <>
       {/* Hero tile - spans 2 cols */}
       <motion.div variants={tileVariants} className="col-span-1 md:col-span-2">
         <HeroTile name="Alex" streak={12} />
@@ -55,7 +58,7 @@ export default function BentoGrid({ courses }: BentoGridProps) {
       </motion.div>
 
       {/* Course tiles */}
-      {courses.map((course) => (
+      {courses?.map((course) => (
         <motion.div key={course.id} variants={tileVariants}>
           <CourseTile course={course} />
         </motion.div>
@@ -70,6 +73,8 @@ export default function BentoGrid({ courses }: BentoGridProps) {
       <motion.div variants={tileVariants} className="col-span-1 md:col-span-2">
         <ActivityTile />
       </motion.div>
+        </>
+      )}
     </motion.div>
   );
 }

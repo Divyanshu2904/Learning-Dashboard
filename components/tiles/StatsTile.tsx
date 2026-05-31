@@ -34,7 +34,12 @@ const stats = [
   },
 ];
 
-export default function StatsTile() {
+interface StatsTileProps {
+  user?: any;
+  index?: number;
+}
+
+export default function StatsTile({ user, index }: StatsTileProps = {}) {
   return (
     <article className="relative rounded-2xl border border-[#1E2733] bg-[#0D1117] p-5 overflow-hidden noise-overlay">
       {/* Background */}

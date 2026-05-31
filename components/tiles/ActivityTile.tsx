@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Activity, TrendingUp } from "lucide-react";
 import { generateActivityData } from "@/lib/utils";
@@ -21,8 +22,24 @@ const levelGlow: Record<number, string> = {
   4: "shadow-[0_0_6px_rgba(0,229,255,0.5)]",
 };
 
-export default function ActivityTile() {
-  const activityData: ActivityDay[] = generateActivityData();
+interface ActivityTileProps {
+  index?: number;
+}
+
+export default function ActivityTile({ index }: ActivityTileProps = {}) {
+  const [activityData, setActivityData] = useState<ActivityDay[]>([]);
+
+  useEffect(() => {
+    setActivityData(generateActivityData());
+  }, []);
+
+  if (activityData.length === 0) {
+    return (
+      <article className="relative col-span-1 md:col-span-2 rounded-2xl border border-[#1E2733] bg-[#0D1117] p-5 overflow-hidden noise-overlay min-h-[220px]">
+        <div className="skeleton h-[180px] w-full rounded-2xl opacity-10" />
+      </article>
+    );
+  }
 
   // Group into weeks (columns of 7)
   const weeks: ActivityDay[][] = [];

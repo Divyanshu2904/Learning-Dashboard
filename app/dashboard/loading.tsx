@@ -1,5 +1,5 @@
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
-import { BentoGrid } from '@/components/dashboard/BentoGrid';
+import BentoGrid from '@/components/tiles/BentoGrid';
 import { FullSkeletonGrid } from '@/components/ui/Skeletons';
 
 export default function Loading() {

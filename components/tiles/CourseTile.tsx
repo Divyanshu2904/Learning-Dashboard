@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 interface CourseTileProps {
   course: Course;
+  index?: number;
 }
 
 // Color schemes for course cards

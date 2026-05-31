@@ -1,20 +1,31 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Flame, Star, ChevronRight } from "lucide-react";
 
 interface HeroTileProps {
-  name: string;
-  streak: number;
+  name?: string;
+  streak?: number;
+  user?: {
+    name: string;
+    streak: number;
+  };
+  index?: number;
 }
 
-export default function HeroTile({ name, streak }: HeroTileProps) {
-  const greeting = () => {
+export default function HeroTile({ name, streak, user }: HeroTileProps) {
+  const displayName = user?.name || name || 'Student';
+  const displayStreak = user?.streak ?? streak ?? 0;
+  
+  const [greetingText, setGreetingText] = useState("Welcome");
+
+  useEffect(() => {
     const hour = new Date().getHours();
-    if (hour < 12) return "Good morning";
-    if (hour < 17) return "Good afternoon";
-    return "Good evening";
-  };
+    if (hour < 12) setGreetingText("Good morning");
+    else if (hour < 17) setGreetingText("Good afternoon");
+    else setGreetingText("Good evening");
+  }, []);
 
   return (
     <article className="relative col-span-1 md:col-span-2 rounded-2xl overflow-hidden border border-[#1E2733] bg-[#0D1117] p-6 noise-overlay min-h-[180px] flex flex-col justify-between">
@@ -29,7 +40,7 @@ export default function HeroTile({ name, streak }: HeroTileProps) {
       <div className="relative flex items-start justify-between">
         <div>
           <p className="text-sm text-slate-500 font-medium tracking-wide uppercase mb-1">
-            {greeting()}
+            {greetingText}
           </p>
           <h1
             className="text-2xl md:text-3xl font-bold text-white leading-tight"
@@ -37,7 +48,7 @@ export default function HeroTile({ name, streak }: HeroTileProps) {
           >
             Welcome back,{" "}
             <span className="bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
-              {name}
+              {displayName}
             </span>
           </h1>
           <p className="text-slate-400 text-sm mt-2">
@@ -46,7 +57,7 @@ export default function HeroTile({ name, streak }: HeroTileProps) {
             week. Keep the momentum!
           </p>
         </div>
-
+ 
         {/* Streak badge */}
         <motion.div
           whileHover={{ scale: 1.05 }}
@@ -56,7 +67,7 @@ export default function HeroTile({ name, streak }: HeroTileProps) {
           <Flame className="w-5 h-5 text-amber-400" />
           <div>
             <p className="text-lg font-bold text-amber-400 leading-none">
-              {streak}
+              {displayStreak}
             </p>
             <p className="text-xs text-amber-500/70 leading-none mt-0.5">
               day streak

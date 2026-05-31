@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   LayoutDashboard,
@@ -12,27 +13,27 @@ import {
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { id: "dashboard", label: "Home", icon: LayoutDashboard },
-  { id: "courses", label: "Courses", icon: BookOpen },
-  { id: "progress", label: "Progress", icon: BarChart3 },
-  { id: "achievements", label: "Awards", icon: Trophy },
-  { id: "settings", label: "Settings", icon: Settings },
+  { id: "dashboard", label: "Home", icon: LayoutDashboard, href: "/dashboard" },
+  { id: "courses", label: "Courses", icon: BookOpen, href: "/courses" },
+  { id: "progress", label: "Progress", icon: BarChart3, href: "/progress" },
+  { id: "achievements", label: "Awards", icon: Trophy, href: "/achievements" },
+  { id: "settings", label: "Settings", icon: Settings, href: "/settings" },
 ];
 
 export default function MobileNav() {
-  const [activeId, setActiveId] = useState("dashboard");
+  const pathname = usePathname();
 
   return (
     <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0D1117]/95 backdrop-blur-xl border-t border-[#1E2733] px-2 py-2 safe-area-bottom">
       <div className="flex items-center justify-around">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = activeId === item.id;
+          const isActive = pathname === item.href || (item.href === "/dashboard" && pathname === "/");
 
           return (
-            <button
+            <Link
               key={item.id}
-              onClick={() => setActiveId(item.id)}
+              href={item.href}
               className="relative flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl"
             >
               {isActive && (
@@ -56,7 +57,7 @@ export default function MobileNav() {
               >
                 {item.label}
               </span>
-            </button>
+            </Link>
           );
         })}
       </div>

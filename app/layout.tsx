@@ -1,10 +1,16 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from "next";
+// @ts-expect-error Side-effect CSS import is handled by Next.js bundler
 import './globals.css';
 
 export const metadata: Metadata = {
   title: 'LearnOS — Student Dashboard',
   description: 'Next-generation learning platform with real-time progress tracking',
+};
+
+export const viewport: Viewport = {
   themeColor: '#080C14',
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({

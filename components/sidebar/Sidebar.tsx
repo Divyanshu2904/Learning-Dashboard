@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
@@ -16,7 +17,7 @@ import { cn } from "@/lib/utils";
 import { NavItem } from "@/types";
 
 const navItems: NavItem[] = [
-  { id: "dashboard", label: "Dashboard", icon: "LayoutDashboard", href: "/" },
+  { id: "dashboard", label: "Dashboard", icon: "LayoutDashboard", href: "/dashboard" },
   { id: "courses", label: "My Courses", icon: "BookOpen", href: "/courses" },
   { id: "progress", label: "Progress", icon: "BarChart3", href: "/progress" },
   {
@@ -38,11 +39,14 @@ const iconMap = {
 
 interface SidebarProps {
   className?: string;
+  collapsed?: boolean;
+  onToggle?: () => void;
 }
 
-export default function Sidebar({ className }: SidebarProps) {
-  const [activeId, setActiveId] = useState("dashboard");
-  const [isExpanded, setIsExpanded] = useState(false);
+export default function Sidebar({ className, collapsed = false, onToggle }: SidebarProps) {
+  const pathname = usePathname();
+  const isExpanded = !collapsed;
+  const toggleSidebar = onToggle || (() => {});
 
   return (
     <motion.nav
@@ -77,16 +81,15 @@ export default function Sidebar({ className }: SidebarProps) {
         </div>
       </div>
 
-      {/* Nav items */}
-      <div className="flex-1 flex flex-col gap-1 p-3 pt-4">
+  <div className="flex-1 flex flex-col gap-1 p-3 pt-4">
         {navItems.map((item) => {
           const Icon = iconMap[item.icon as keyof typeof iconMap];
-          const isActive = activeId === item.id;
+          const isActive = pathname === item.href || (item.href === "/dashboard" && pathname === "/");
 
           return (
-            <button
+            <Link
               key={item.id}
-              onClick={() => setActiveId(item.id)}
+              href={item.href}
               className="relative flex items-center gap-3 px-2.5 py-2.5 rounded-xl text-left w-full group"
             >
               {/* Active background with layoutId */}
@@ -132,7 +135,7 @@ export default function Sidebar({ className }: SidebarProps) {
                   </motion.span>
                 )}
               </AnimatePresence>
-            </button>
+            </Link>
           );
         })}
       </div>
@@ -166,7 +169,7 @@ export default function Sidebar({ className }: SidebarProps) {
 
         {/* Expand toggle */}
         <button
-          onClick={() => setIsExpanded(!isExpanded)}
+          onClick={toggleSidebar}
           className="flex items-center justify-center w-full h-8 rounded-lg bg-[#1E2733] hover:bg-[#243040] transition-colors duration-200 group"
         >
           <motion.div

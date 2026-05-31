@@ -1,12 +1,12 @@
 import { Suspense } from 'react';
 import { getCourses } from '@/lib/supabase';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
-import { HeroTile } from '@/components/dashboard/HeroTile';
-import { CourseTile } from '@/components/dashboard/CourseTile';
-import { ActivityTile } from '@/components/dashboard/ActivityTile';
-import { StatsTile } from '@/components/dashboard/StatsTile';
+import HeroTile from '@/components/tiles/HeroTile';
+import CourseTile from '@/components/tiles/CourseTile';
+import ActivityTile from '@/components/tiles/ActivityTile';
+import StatsTile from '@/components/tiles/StatsTile';
 import { CoursesSkeleton } from '@/components/ui/Skeletons';
-import { BentoGrid } from '@/components/dashboard/BentoGrid';
+import BentoGrid from '@/components/tiles/BentoGrid';
 import { assignColors } from '@/lib/utils';
 
 const userProfile = {

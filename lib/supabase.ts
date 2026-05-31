@@ -1,12 +1,19 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Course } from '@/types';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const isConfigured = 
+  supabaseUrl.startsWith('http') && 
+  !supabaseUrl.includes('your_supabase_url_here');
+
+export const supabase = isConfigured ? createClient(supabaseUrl, supabaseAnonKey) : null;
 
 export async function getCourses(): Promise<Course[]> {
+  if (!supabase) {
+    return getFallbackCourses();
+  }
   try {
     const { data, error } = await supabase
       .from('courses')
