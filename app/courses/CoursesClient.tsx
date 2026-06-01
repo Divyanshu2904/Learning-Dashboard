@@ -20,7 +20,7 @@ export default function CoursesClient({ initialCourses }: CoursesClientProps) {
   const filteredCourses = courses.filter((course) => {
     const matchesSearch =
       course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.instructor.toLowerCase().includes(searchQuery.toLowerCase());
+      (course.instructor || "").toLowerCase().includes(searchQuery.toLowerCase());
 
     const isCompleted = course.progress === 100;
     const matchesTab =
@@ -184,7 +184,7 @@ export default function CoursesClient({ initialCourses }: CoursesClientProps) {
                 {selectedCourse.title}
               </h2>
               <p className="text-sm text-slate-400 mb-6">
-                Led by <span className="text-slate-200 font-semibold">{selectedCourse.instructor}</span>
+                Led by <span className="text-slate-200 font-semibold">{selectedCourse.instructor || "Expert Tutor"}</span>
               </p>
 
               {/* Course syllabus mockup */}
