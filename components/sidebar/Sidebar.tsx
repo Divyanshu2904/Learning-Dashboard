@@ -73,7 +73,7 @@ export default function Sidebar({ className, collapsed = false, onToggle }: Side
       animate={{ width: isExpanded ? 220 : 72 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className={cn(
-        "hidden lg:flex flex-col h-full border-r border-[#1E2733] bg-[#0D1117] shrink-0 overflow-hidden relative z-10",
+        "flex flex-col h-full border-r border-[#1E2733] bg-[#0D1117] shrink-0 overflow-hidden relative z-10",
         className
       )}
     >
@@ -162,8 +162,8 @@ export default function Sidebar({ className, collapsed = false, onToggle }: Side
       {/* Bottom: toggle + avatar */}
       <div className="p-3 border-t border-[#1E2733] flex flex-col gap-2">
         {/* User avatar */}
-        <div className="flex items-center gap-3 px-2.5 py-2">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-400 to-pink-500 flex items-center justify-center shrink-0">
+        <Link href="/settings" className="flex items-center gap-3 px-2.5 py-2 hover:bg-[#1E2733]/40 rounded-xl transition-all duration-200 group">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-400 to-pink-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
             <User className="w-4 h-4 text-white" />
           </div>
           <AnimatePresence>
@@ -175,13 +175,13 @@ export default function Sidebar({ className, collapsed = false, onToggle }: Side
                 transition={{ duration: 0.15 }}
                 className="overflow-hidden"
               >
-                <p className="text-xs font-medium text-slate-200 whitespace-nowrap">
+                <p className="text-xs font-medium text-slate-200 whitespace-nowrap group-hover:text-cyan-400 transition-colors">
                   {displayName}
                 </p>
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </Link>
 
         {/* Expand toggle */}
         <button

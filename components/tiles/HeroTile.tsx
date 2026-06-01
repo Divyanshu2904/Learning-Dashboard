@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Flame, Star, ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 interface HeroTileProps {
   name?: string;
@@ -110,14 +111,16 @@ export default function HeroTile({ name, streak, user }: HeroTileProps) {
           <span className="text-xs text-slate-500 ml-2">5/7 days this week</span>
         </div>
 
-        <motion.button
-          whileHover={{ x: 3 }}
-          transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className="flex items-center gap-1.5 text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium"
-        >
-          Continue learning
-          <ChevronRight className="w-4 h-4" />
-        </motion.button>
+        <Link href="/courses">
+          <motion.div
+            whileHover={{ x: 3 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="flex items-center gap-1.5 text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium cursor-pointer"
+          >
+            Continue learning
+            <ChevronRight className="w-4 h-4" />
+          </motion.div>
+        </Link>
       </div>
 
       {/* Stars decoration */}

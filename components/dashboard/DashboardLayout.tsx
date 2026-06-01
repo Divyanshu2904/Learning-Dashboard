@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Sidebar from '@/components/sidebar/Sidebar';
 
 interface DashboardLayoutProps {
@@ -10,6 +11,24 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [firstLetter, setFirstLetter] = useState('D');
+
+  // Reactively track dynamic username changes for initials
+  useEffect(() => {
+    const savedName = localStorage.getItem("studentName");
+    if (savedName && savedName.trim().length > 0) {
+      setFirstLetter(savedName.trim()[0].toUpperCase());
+    }
+
+    const handleUpdate = () => {
+      const updatedName = localStorage.getItem("studentName");
+      if (updatedName && updatedName.trim().length > 0) {
+        setFirstLetter(updatedName.trim()[0].toUpperCase());
+      }
+    };
+    window.addEventListener("studentNameUpdated", handleUpdate);
+    return () => window.removeEventListener("studentNameUpdated", handleUpdate);
+  }, []);
 
   return (
     <div className="flex min-h-screen bg-[#080C14] relative overflow-hidden">
@@ -21,38 +40,38 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <div className="fixed bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
       <div className="fixed top-1/2 left-1/2 w-72 h-72 bg-blue-500/4 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Sidebar — hidden on mobile */}
-      <div className="hidden md:block relative z-20">
+      {/* Sidebar — hidden on mobile & tablets */}
+      <div className="hidden lg:block relative z-20">
         <Sidebar
           collapsed={sidebarCollapsed}
           onToggle={() => setSidebarCollapsed(v => !v)}
         />
       </div>
 
-      {/* Mobile menu overlay */}
+      {/* Mobile/Tablet menu overlay */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/60 z-30 md:hidden backdrop-blur-sm"
+          className="fixed inset-0 bg-black/60 z-30 lg:hidden backdrop-blur-sm"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
 
-      {/* Mobile slide-in sidebar */}
+      {/* Mobile/Tablet slide-in sidebar drawer */}
       <div
-        className={`fixed inset-y-0 left-0 z-40 md:hidden transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 z-40 lg:hidden transition-transform duration-300 ease-in-out ${
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <Sidebar collapsed={false} onToggle={() => setMobileMenuOpen(false)} />
       </div>
 
-      {/* Main content */}
+      {/* Main content area */}
       <main className="flex-1 relative z-10 overflow-auto">
-        {/* Mobile top bar */}
-        <div className="md:hidden flex items-center justify-between px-4 py-4 border-b border-[#1E2D45]/60">
+        {/* Mobile/Tablet top bar */}
+        <div className="lg:hidden flex items-center justify-between px-4 py-4 border-b border-[#1E2D45]/60 bg-[#0D1117]/80 backdrop-blur-md sticky top-0 z-20">
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="p-2 rounded-lg bg-[#0D1220] border border-[#1E2D45] text-[#8BA4C0] hover:text-[#E8F4FD] transition-colors"
+            className="p-2 rounded-lg bg-[#0D1220] border border-[#1E2D45] text-[#8BA4C0] hover:text-[#E8F4FD] active:scale-95 transition-all"
             aria-label="Open menu"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -61,34 +80,23 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               <line x1="3" y1="18" x2="21" y2="18" />
             </svg>
           </button>
+          
           <span className="font-display font-bold text-[#E8F4FD] tracking-tight text-lg">LearnOS</span>
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-xs font-bold text-white">A</div>
+          
+          {/* Circular avatar links directly to settings */}
+          <Link 
+            href="/settings" 
+            className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-xs font-bold text-white hover:scale-105 active:scale-95 transition-all"
+            title="Go to Settings"
+          >
+            {firstLetter}
+          </Link>
         </div>
 
         <div className="p-4 md:p-6 lg:p-8 max-w-[1400px]">
           {children}
         </div>
       </main>
-
-      {/* Mobile bottom nav */}
-      <nav className="md:hidden fixed bottom-0 inset-x-0 z-20 bg-[#0D1220]/95 backdrop-blur-xl border-t border-[#1E2D45]/80">
-        <div className="flex items-center justify-around px-2 py-3">
-          {[
-            { icon: '⊞', label: 'Home' },
-            { icon: '◫', label: 'Courses' },
-            { icon: '◈', label: 'Progress' },
-            { icon: '◉', label: 'Profile' },
-          ].map((item) => (
-            <button
-              key={item.label}
-              className="flex flex-col items-center gap-1 px-3 py-1 rounded-lg text-[#4A6785] hover:text-[#00D4FF] transition-colors group"
-            >
-              <span className="text-lg group-hover:scale-110 transition-transform">{item.icon}</span>
-              <span className="text-[10px] font-medium">{item.label}</span>
-            </button>
-          ))}
-        </div>
-      </nav>
     </div>
   );
 }
