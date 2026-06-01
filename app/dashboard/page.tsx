@@ -10,7 +10,7 @@ import BentoGrid from '@/components/tiles/BentoGrid';
 import { assignColors } from '@/lib/utils';
 
 const userProfile = {
-  name: 'Aryan',
+  name: 'Divyanshu',
   streak: 12,
   xp: 4280,
   level: 7,

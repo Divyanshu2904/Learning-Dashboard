@@ -157,10 +157,7 @@ export default function Sidebar({ className, collapsed = false, onToggle }: Side
                 className="overflow-hidden"
               >
                 <p className="text-xs font-medium text-slate-200 whitespace-nowrap">
-                  Alex Johnson
-                </p>
-                <p className="text-xs text-slate-500 whitespace-nowrap">
-                  Pro Student
+                  Divyanshu Kumar
                 </p>
               </motion.div>
             )}

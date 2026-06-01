@@ -7,8 +7,8 @@ import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<"profile" | "notifications" | "personalization">("profile");
-  const [name, setName] = useState("Alex Johnson");
-  const [email, setEmail] = useState("alex.johnson@learnos.edu");
+  const [name, setName] = useState("Divyanshu Kumar");
+  const [email, setEmail] = useState("divyanshu.kumar@learnos.edu");
   const [profession, setProfession] = useState("Computer Science Student");
   const [showSavedNotification, setShowSavedNotification] = useState(false);
 

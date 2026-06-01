@@ -1,14 +1,24 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Course } from '@/types';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+const rawUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').trim();
+
+// Automatically clean URL if trailing API paths are appended
+let cleanUrl = rawUrl.trim();
+if (cleanUrl.endsWith('/rest/v1/')) {
+  cleanUrl = cleanUrl.slice(0, -9);
+} else if (cleanUrl.endsWith('/rest/v1')) {
+  cleanUrl = cleanUrl.slice(0, -8);
+}
 
 const isConfigured = 
-  supabaseUrl.startsWith('http') && 
-  !supabaseUrl.includes('your_supabase_url_here');
+  cleanUrl.startsWith('http') && 
+  !cleanUrl.includes('your_supabase_url_here') &&
+  supabaseAnonKey.length > 0;
 
-export const supabase = isConfigured ? createClient(supabaseUrl, supabaseAnonKey) : null;
+export const supabase = isConfigured ? createClient(cleanUrl, supabaseAnonKey) : null;
 
 export async function getCourses(): Promise<Course[]> {
   if (!supabase) {
@@ -19,6 +29,8 @@ export async function getCourses(): Promise<Course[]> {
       .from('courses')
       .select('*')
       .order('created_at', { ascending: false });
+      console.log("SUPABASE DATA:", data);
+      console.log("SUPABASE ERROR:", error);
 
     if (error) {
       console.error('Supabase error:', error.message);
