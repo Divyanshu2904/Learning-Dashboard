@@ -2,6 +2,28 @@
 
 A futuristic, highly animated student learning dashboard built with Next.js App Router, Supabase, Tailwind CSS, and Framer Motion.
 
+---
+
+## 🌟 Visual Showcase & Preview
+
+### 1. Interactive Home Dashboard
+Highly-personalized welcoming greeting, large activity contribution matrix, stats tracking tiles, and dynamic database courses.
+![LearnOS Home Dashboard](./public/screenshots/dashboard.png)
+
+### 2. Live Courses & Curriculum Hub
+Manage dynamic registered curriculum and interactive glassmorphic syllabus modals.
+![LearnOS Courses Hub](./public/screenshots/courses.png)
+
+### 3. Deep Learning Analytics & Analytics Page
+Physical spring charts for weekly study logs, topic mastery charts, and milestone logs.
+![LearnOS Performance Progress](./public/screenshots/progress.png)
+
+### 4. Achievements & Graduate Certifications
+Glowing verified unlocks for progress badges and download Click-to-Save verified graduation credentials.
+![LearnOS Achievements & Badges](./public/screenshots/achievements.png)
+
+---
+
 ## Live Demo
 
 > Deploy to Vercel and paste your URL here.
