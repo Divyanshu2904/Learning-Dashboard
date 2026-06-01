@@ -36,8 +36,8 @@ export default function DashboardPage() {
     <DashboardLayout>
       <BentoGrid>
         <HeroTile user={userProfile} index={0} />
-        <StatsTile user={userProfile} index={1} />
-        <ActivityTile index={2} />
+        <ActivityTile index={1} />
+        <StatsTile user={userProfile} index={2} />
         <Suspense fallback={<CoursesSkeleton count={4} />}>
           <CoursesSection />
         </Suspense>

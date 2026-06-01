@@ -68,7 +68,7 @@ export default function ActivityTile({ index }: ActivityTileProps = {}) {
             >
               Learning Activity
             </h3>
-            <p className="text-xs text-slate-500">Past 16 weeks</p>
+            <p className="text-xs text-slate-500">Past 26 weeks</p>
           </div>
         </div>
 
@@ -95,7 +95,7 @@ export default function ActivityTile({ index }: ActivityTileProps = {}) {
                     damping: 25,
                   }}
                   title={`${day.date}: ${day.count} activities`}
-                  className={`w-3 h-3 rounded-sm cursor-pointer transition-transform hover:scale-125 ${
+                  className={`w-[15px] h-[15px] rounded-sm cursor-pointer transition-transform hover:scale-125 ${
                     levelColors[day.level]
                   } ${levelGlow[day.level]}`}
                 />

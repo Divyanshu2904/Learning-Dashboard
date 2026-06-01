@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -47,6 +48,24 @@ export default function Sidebar({ className, collapsed = false, onToggle }: Side
   const pathname = usePathname();
   const isExpanded = !collapsed;
   const toggleSidebar = onToggle || (() => {});
+
+  const [displayName, setDisplayName] = useState("Divyanshu Kumar");
+
+  useEffect(() => {
+    const savedName = localStorage.getItem("studentName");
+    if (savedName) {
+      setDisplayName(savedName);
+    }
+
+    const handleUpdate = () => {
+      const updatedName = localStorage.getItem("studentName");
+      if (updatedName) {
+        setDisplayName(updatedName);
+      }
+    };
+    window.addEventListener("studentNameUpdated", handleUpdate);
+    return () => window.removeEventListener("studentNameUpdated", handleUpdate);
+  }, []);
 
   return (
     <motion.nav
@@ -157,7 +176,7 @@ export default function Sidebar({ className, collapsed = false, onToggle }: Side
                 className="overflow-hidden"
               >
                 <p className="text-xs font-medium text-slate-200 whitespace-nowrap">
-                  Divyanshu Kumar
+                  {displayName}
                 </p>
               </motion.div>
             )}

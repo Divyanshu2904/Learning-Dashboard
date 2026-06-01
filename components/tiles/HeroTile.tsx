@@ -15,7 +15,24 @@ interface HeroTileProps {
 }
 
 export default function HeroTile({ name, streak, user }: HeroTileProps) {
-  const displayName = user?.name || name || 'Student';
+  const [displayName, setDisplayName] = useState(user?.name || name || 'Student');
+
+  useEffect(() => {
+    const savedName = localStorage.getItem("studentName");
+    if (savedName) {
+      setDisplayName(savedName.split(" ")[0]);
+    }
+
+    const handleUpdate = () => {
+      const updatedName = localStorage.getItem("studentName");
+      if (updatedName) {
+        setDisplayName(updatedName.split(" ")[0]);
+      }
+    };
+    window.addEventListener("studentNameUpdated", handleUpdate);
+    return () => window.removeEventListener("studentNameUpdated", handleUpdate);
+  }, [user, name]);
+
   const displayStreak = user?.streak ?? streak ?? 0;
   
   const [greetingText, setGreetingText] = useState("Welcome");
@@ -28,7 +45,7 @@ export default function HeroTile({ name, streak, user }: HeroTileProps) {
   }, []);
 
   return (
-    <article className="relative col-span-1 md:col-span-2 rounded-2xl overflow-hidden border border-[#1E2733] bg-[#0D1117] p-6 noise-overlay min-h-[180px] flex flex-col justify-between">
+    <article className="relative col-span-1 md:col-span-2 lg:col-span-3 rounded-2xl overflow-hidden border border-[#1E2733] bg-[#0D1117] p-6 noise-overlay min-h-[180px] flex flex-col justify-between">
       {/* Background gradient mesh */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-cyan-500/8 blur-3xl" />

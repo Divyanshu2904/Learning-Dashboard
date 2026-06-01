@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Bell, Sliders, Shield, Save, CheckCircle2, ChevronRight, Moon, Sparkles } from "lucide-react";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
@@ -11,6 +11,14 @@ export default function SettingsPage() {
   const [email, setEmail] = useState("divyanshu.kumar@learnos.edu");
   const [profession, setProfession] = useState("Computer Science Student");
   const [showSavedNotification, setShowSavedNotification] = useState(false);
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    const savedName = localStorage.getItem("studentName");
+    const savedEmail = localStorage.getItem("studentEmail");
+    if (savedName) setName(savedName);
+    if (savedEmail) setEmail(savedEmail);
+  }, []);
 
   // Preference switches states
   const [reminders, setReminders] = useState(true);
@@ -36,6 +44,11 @@ export default function SettingsPage() {
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
+    localStorage.setItem("studentName", name);
+    localStorage.setItem("studentEmail", email);
+    // Dispatch event to notify other mounted components instantly
+    window.dispatchEvent(new Event("studentNameUpdated"));
+    
     setShowSavedNotification(true);
     setTimeout(() => setShowSavedNotification(false), 3000);
   };
@@ -56,7 +69,7 @@ export default function SettingsPage() {
                 <CheckCircle2 className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-100">Settings Saved</p>
+                <p className="text-xs font-bold text-slate-100">Profile Saved</p>
                 <p className="text-[10px] text-slate-400 mt-0.5">Your profile and preferences have been successfully updated.</p>
               </div>
             </motion.div>
